@@ -1,0 +1,58 @@
+# Development override - use with: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.api.dev
+    depends_on:
+      - vn_test_db
+    volumes:
+      # Mount source code for hot reload
+      - .:/app
+      - maven_cache:/root/.m2
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - JAVA_OPTS=-Xmx512m -Xms256m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+      # TODO - add CI/CD variables here
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://vn_test_db:5432/vn_test?sslmode=disable
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=example
+    ports:
+      - "8081:8081"
+      - "5005:5005"  # Debug port
+    command: mvn spring-boot:run
+
+  # TODO add a healthcheck here...
+  vn_test_db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile.postgres
+    image: auto-postgres
+    restart: always
+    shm_size: 128mb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init/:/docker-entrypoint-initdb.d/
+      - ./database/db/:/db/
+    environment:
+      # TODO replace if we're running in prod
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: vn_test
+    ports:
+      - 5432:5432
+
+  pgAdmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pontusgrandin@proton.me
+      PGADMIN_DEFAULT_PASSWORD: example
+    ports:
+      - 8080:80  
+
+volumes:
+  maven_cache:
+  postgres_data:

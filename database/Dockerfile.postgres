@@ -1,0 +1,16 @@
+# Build stage
+FROM postgres:17 AS builder
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    postgresql-server-dev-17 \
+    make
+COPY /c/ /tmp/extension
+WORKDIR /tmp/extension
+RUN make && make install
+
+# Runtime stage
+FROM postgres:17
+# Copy the built extension from builder stage
+COPY --from=builder /usr/lib/postgresql/17/lib/vndbfuncs.so /usr/lib/postgresql/17/lib/
+COPY --from=builder /usr/share/postgresql/17/extension/vndbfuncs* /usr/share/postgresql/17/extension/
+
