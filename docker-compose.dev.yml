@@ -2,12 +2,14 @@
 version: '3.8'
 
 services:
-  app:
+  api_app:
     build:
       context: .
       dockerfile: Dockerfile.api.dev
+    # TODO add a healthcheck here... https://docs.docker.com/compose/how-tos/startup-order/
     depends_on:
-      - vn_test_db
+      vn_test_db:
+        condition: service_healthy
     volumes:
       # Mount source code for hot reload
       - .:/app
@@ -25,12 +27,20 @@ services:
       - "5005:5005"  # Debug port
     command: mvn spring-boot:run
 
-  # TODO add a healthcheck here...
   vn_test_db:
     build:
       context: ./database
       dockerfile: Dockerfile.postgres
     image: auto-postgres
+    healthcheck:
+    # TODO change postgres user to ci/cd variable...
+    # Same with postgres_db
+      test: ["CMD-SHELL", "pg_isready -U postgres -d vn_test"]
+      interval: 15s,
+      retries: 10
+      timeout: 10s,
+      start_period: 40s
+      # start_interval: 5s
     restart: always
     shm_size: 128mb
     volumes:
