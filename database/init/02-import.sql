@@ -175,6 +175,7 @@ SELECT EXISTS(SELECT 1 FROM pg_type WHERE typname = 'vndbtag') as has_vndbtag\gs
 
 
 -- These are included to verify the internal consistency of the dump, you can safely comment out this part.
+-- Keep these - all referenced tables exist:
 ALTER TABLE chars                    ADD CONSTRAINT chars_main_fkey                    FOREIGN KEY (main)      REFERENCES chars         (id);
 ALTER TABLE chars                    ADD CONSTRAINT chars_image_fkey                   FOREIGN KEY (image)     REFERENCES images        (id);
 ALTER TABLE chars_traits             ADD CONSTRAINT chars_traits_id_fkey               FOREIGN KEY (id)        REFERENCES chars         (id);
@@ -182,8 +183,6 @@ ALTER TABLE chars_traits             ADD CONSTRAINT chars_traits_tid_fkey       
 ALTER TABLE chars_vns                ADD CONSTRAINT chars_vns_id_fkey                  FOREIGN KEY (id)        REFERENCES chars         (id);
 ALTER TABLE chars_vns                ADD CONSTRAINT chars_vns_vid_fkey                 FOREIGN KEY (vid)       REFERENCES vn            (id);
 ALTER TABLE chars_vns                ADD CONSTRAINT chars_vns_rid_fkey                 FOREIGN KEY (rid)       REFERENCES releases      (id);
-ALTER TABLE image_votes              ADD CONSTRAINT image_votes_id_fkey                FOREIGN KEY (id)        REFERENCES images        (id) ON DELETE CASCADE;
-ALTER TABLE image_votes              ADD CONSTRAINT image_votes_uid_fkey               FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE SET DEFAULT;
 ALTER TABLE producers_extlinks       ADD CONSTRAINT producers_extlinks_id_fkey         FOREIGN KEY (id)        REFERENCES producers     (id);
 ALTER TABLE producers_extlinks       ADD CONSTRAINT producers_extlinks_link_fkey       FOREIGN KEY (link)      REFERENCES extlinks      (id);
 ALTER TABLE producers_relations      ADD CONSTRAINT producers_relations_pid_fkey       FOREIGN KEY (pid)       REFERENCES producers     (id);
@@ -204,8 +203,6 @@ ALTER TABLE releases_supersedes      ADD CONSTRAINT releases_supersedes_id_fkey 
 ALTER TABLE releases_supersedes      ADD CONSTRAINT releases_supersedes_rid_fkey       FOREIGN KEY (rid)       REFERENCES releases      (id);
 ALTER TABLE releases_vn              ADD CONSTRAINT releases_vn_id_fkey                FOREIGN KEY (id)        REFERENCES releases      (id);
 ALTER TABLE releases_vn              ADD CONSTRAINT releases_vn_vid_fkey               FOREIGN KEY (vid)       REFERENCES vn            (id);
-ALTER TABLE rlists                   ADD CONSTRAINT rlists_uid_fkey                    FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
-ALTER TABLE rlists                   ADD CONSTRAINT rlists_rid_fkey                    FOREIGN KEY (rid)       REFERENCES releases      (id);
 ALTER TABLE staff                    ADD CONSTRAINT staff_main_fkey                    FOREIGN KEY (main)      REFERENCES staff_alias   (aid) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE staff                    ADD CONSTRAINT staff_prod_fkey                    FOREIGN KEY (prod)      REFERENCES producers     (id);
 ALTER TABLE staff_alias              ADD CONSTRAINT staff_alias_id_fkey                FOREIGN KEY (id)        REFERENCES staff         (id);
@@ -215,13 +212,9 @@ ALTER TABLE tags_parents             ADD CONSTRAINT tags_parents_id_fkey        
 ALTER TABLE tags_parents             ADD CONSTRAINT tags_parents_parent_fkey           FOREIGN KEY (parent)    REFERENCES tags          (id);
 ALTER TABLE tags_vn                  ADD CONSTRAINT tags_vn_tag_fkey                   FOREIGN KEY (tag)       REFERENCES tags          (id);
 ALTER TABLE tags_vn                  ADD CONSTRAINT tags_vn_vid_fkey                   FOREIGN KEY (vid)       REFERENCES vn            (id);
-ALTER TABLE tags_vn                  ADD CONSTRAINT tags_vn_uid_fkey                   FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE SET DEFAULT;
 ALTER TABLE traits                   ADD CONSTRAINT traits_gid_fkey                    FOREIGN KEY (gid)       REFERENCES traits        (id);
 ALTER TABLE traits_parents           ADD CONSTRAINT traits_parents_id_fkey             FOREIGN KEY (id)        REFERENCES traits        (id);
 ALTER TABLE traits_parents           ADD CONSTRAINT traits_parents_parent_fkey         FOREIGN KEY (parent)    REFERENCES traits        (id);
-ALTER TABLE ulist_labels             ADD CONSTRAINT ulist_labels_uid_fkey              FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
-ALTER TABLE ulist_vns                ADD CONSTRAINT ulist_vns_uid_fkey                 FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
-ALTER TABLE ulist_vns                ADD CONSTRAINT ulist_vns_vid_fkey                 FOREIGN KEY (vid)       REFERENCES vn            (id);
 ALTER TABLE vn                       ADD CONSTRAINT vn_image_fkey                      FOREIGN KEY (image)     REFERENCES images        (id);
 ALTER TABLE vn                       ADD CONSTRAINT vn_l_wikidata_fkey                 FOREIGN KEY (l_wikidata)REFERENCES wikidata      (id);
 ALTER TABLE vn                       ADD CONSTRAINT vn_olang_fkey                      FOREIGN KEY (id,olang)  REFERENCES vn_titles     (id,lang)   DEFERRABLE INITIALLY DEFERRED;
@@ -238,11 +231,19 @@ ALTER TABLE vn_seiyuu                ADD CONSTRAINT vn_seiyuu_cid_fkey          
 ALTER TABLE vn_staff                 ADD CONSTRAINT vn_staff_id_eid_fkey               FOREIGN KEY (id,eid)    REFERENCES vn_editions   (id,eid) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE vn_staff                 ADD CONSTRAINT vn_staff_aid_fkey                  FOREIGN KEY (aid)       REFERENCES staff_alias   (aid) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE vn_titles                ADD CONSTRAINT vn_titles_id_fkey                  FOREIGN KEY (id)        REFERENCES vn            (id);
-ALTER TABLE vn_length_votes          ADD CONSTRAINT vn_length_votes_vid_fkey           FOREIGN KEY (vid)       REFERENCES vn            (id);
-ALTER TABLE vn_length_votes          ADD CONSTRAINT vn_length_votes_uid_fkey           FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE SET DEFAULT;
-ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_vid_fkey            FOREIGN KEY (vid)       REFERENCES vn            (id);
-ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_uid_fkey            FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
-ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_img_fkey            FOREIGN KEY (img)       REFERENCES images        (id) ON DELETE CASCADE;
+-- ALTER TABLE image_votes              ADD CONSTRAINT image_votes_id_fkey                FOREIGN KEY (id)        REFERENCES images        (id) ON DELETE CASCADE;
+-- ALTER TABLE image_votes              ADD CONSTRAINT image_votes_uid_fkey               FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE SET DEFAULT;
+-- ALTER TABLE rlists                   ADD CONSTRAINT rlists_uid_fkey                    FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
+-- ALTER TABLE rlists                   ADD CONSTRAINT rlists_rid_fkey                    FOREIGN KEY (rid)       REFERENCES releases      (id);
+-- ALTER TABLE tags_vn                  ADD CONSTRAINT tags_vn_uid_fkey                   FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE SET DEFAULT;
+-- ALTER TABLE ulist_labels             ADD CONSTRAINT ulist_labels_uid_fkey              FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
+-- ALTER TABLE ulist_vns                ADD CONSTRAINT ulist_vns_uid_fkey                 FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
+-- ALTER TABLE ulist_vns                ADD CONSTRAINT ulist_vns_vid_fkey                 FOREIGN KEY (vid)       REFERENCES vn            (id);
+-- ALTER TABLE vn_length_votes          ADD CONSTRAINT vn_length_votes_vid_fkey           FOREIGN KEY (vid)       REFERENCES vn            (id);
+-- ALTER TABLE vn_length_votes          ADD CONSTRAINT vn_length_votes_uid_fkey           FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE SET DEFAULT;
+-- ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_vid_fkey            FOREIGN KEY (vid)       REFERENCES vn            (id);
+-- ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_uid_fkey            FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
+-- ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_img_fkey            FOREIGN KEY (img)       REFERENCES images        (id) ON DELETE CASCADE;
 
 
 -- Sparse documentation, but it's something!
@@ -260,14 +261,14 @@ COMMENT ON COLUMN chars.birthday IS 'Birthday, 0 or mmdd';
 COMMENT ON COLUMN chars.height IS 'cm';
 COMMENT ON COLUMN chars.weight IS 'kg';
 COMMENT ON COLUMN chars.age IS 'years';
-COMMENT ON COLUMN docs.content IS 'In MultiMarkdown format';
-COMMENT ON COLUMN entry_meta.lastmod IS 'Last modification date';
-COMMENT ON COLUMN entry_meta.revision IS 'Latest revision number';
-COMMENT ON COLUMN entry_meta.num_edits IS 'Number of non-bot edits';
-COMMENT ON COLUMN entry_meta.num_users IS 'Number of users who have edited this entry';
-COMMENT ON COLUMN image_votes.sexual IS '0 = safe, 1 = suggestive, 2 = explicit';
-COMMENT ON COLUMN image_votes.violence IS '0 = tame, 1 = violent, 2 = brutal';
-COMMENT ON COLUMN image_votes.ignore IS 'Set when overruled by a moderator';
+-- COMMENT ON COLUMN docs.content IS 'In MultiMarkdown format';
+-- COMMENT ON COLUMN entry_meta.lastmod IS 'Last modification date';
+-- COMMENT ON COLUMN entry_meta.revision IS 'Latest revision number';
+-- COMMENT ON COLUMN entry_meta.num_edits IS 'Number of non-bot edits';
+-- COMMENT ON COLUMN entry_meta.num_users IS 'Number of users who have edited this entry';
+-- COMMENT ON COLUMN image_votes.sexual IS '0 = safe, 1 = suggestive, 2 = explicit';
+-- COMMENT ON COLUMN image_votes.violence IS '0 = tame, 1 = violent, 2 = brutal';
+-- COMMENT ON COLUMN image_votes.ignore IS 'Set when overruled by a moderator';
 COMMENT ON COLUMN images.width IS 'px';
 COMMENT ON COLUMN images.height IS 'px';
 COMMENT ON COLUMN images.c_sexual_avg IS '0 - 200, so average vote * 100';
@@ -286,24 +287,24 @@ COMMENT ON COLUMN releases.ani_ero_sp IS 'Ero scene sprite animation';
 COMMENT ON COLUMN releases.ani_ero_cg IS 'Ero scene CG animation';
 COMMENT ON COLUMN releases.ani_bg IS 'Background effects';
 COMMENT ON COLUMN releases.ani_face IS 'Eye blink / lip sync';
-COMMENT ON TABLE rlists IS 'User''s releases list';
-COMMENT ON COLUMN rlists.status IS '0 = Unknown, 1 = Pending, 2 = Obtained, 3 = On loan, 4 = Deleted';
+-- COMMENT ON TABLE rlists IS 'User''s releases list';
+-- COMMENT ON COLUMN rlists.status IS '0 = Unknown, 1 = Pending, 2 = Obtained, 3 = On loan, 4 = Deleted';
 COMMENT ON COLUMN staff.main IS 'Primary name for the staff entry';
 COMMENT ON COLUMN staff_alias.aid IS 'Globally unique ID of this alias';
 COMMENT ON COLUMN tags_vn.vote IS 'negative for downvote, 1-3 otherwise';
 COMMENT ON COLUMN tags_vn.lie IS 'implies spoiler=0';
 COMMENT ON COLUMN traits.gid IS 'Trait group (technically a cached column, main parent''s root trait)';
 COMMENT ON COLUMN traits.gorder IS 'Group order, only used when gid IS NULL';
-COMMENT ON TABLE ulist_labels IS 'User labels assigned to visual novels';
-COMMENT ON COLUMN ulist_labels.id IS '0 < builtin < 10 <= custom, ids are reused';
-COMMENT ON TABLE ulist_vns IS 'User''s VN lists';
-COMMENT ON COLUMN ulist_vns.lastmod IS 'updated when any column in this row has changed';
-COMMENT ON COLUMN ulist_vns.vote_date IS 'Not updated when the vote is changed';
-COMMENT ON COLUMN ulist_vns.vote IS '0 - 100';
-COMMENT ON COLUMN users.ign_votes IS 'Set when user''s votes are ignored';
-COMMENT ON COLUMN users.perm_imgvote IS 'User''s image votes don''t count when false';
-COMMENT ON COLUMN users.perm_tag IS 'User''s tag votes don''t count when false';
-COMMENT ON COLUMN users.perm_lengthvote IS 'User''s length votes don''t count when false';
+-- COMMENT ON TABLE ulist_labels IS 'User labels assigned to visual novels';
+-- COMMENT ON COLUMN ulist_labels.id IS '0 < builtin < 10 <= custom, ids are reused';
+-- COMMENT ON TABLE ulist_vns IS 'User''s VN lists';
+-- COMMENT ON COLUMN ulist_vns.lastmod IS 'updated when any column in this row has changed';
+-- COMMENT ON COLUMN ulist_vns.vote_date IS 'Not updated when the vote is changed';
+-- COMMENT ON COLUMN ulist_vns.vote IS '0 - 100';
+-- COMMENT ON COLUMN users.ign_votes IS 'Set when user''s votes are ignored';
+-- COMMENT ON COLUMN users.perm_imgvote IS 'User''s image votes don''t count when false';
+-- COMMENT ON COLUMN users.perm_tag IS 'User''s tag votes don''t count when false';
+-- COMMENT ON COLUMN users.perm_lengthvote IS 'User''s length votes don''t count when false';
 COMMENT ON COLUMN vn.image IS 'deprecated, replaced with c_image';
 COMMENT ON COLUMN vn.olang IS 'Original language';
 COMMENT ON COLUMN vn.c_rating IS 'decimal vote*100, i.e. 100 - 1000';
@@ -312,9 +313,9 @@ COMMENT ON COLUMN vn.length IS 'Old length field, 0 = unknown, 1 = very short [.
 COMMENT ON COLUMN vn.devstatus IS '0 = finished, 1 = ongoing, 2 = cancelled';
 COMMENT ON COLUMN vn.l_renai IS 'Renai.us identifier';
 COMMENT ON COLUMN vn_editions.eid IS 'Edition identifier, local to the VN, not stable across revisions';
-COMMENT ON COLUMN vn_length_votes.length IS 'minutes';
-COMMENT ON COLUMN vn_length_votes.speed IS 'NULL=uncounted/ignored, 0=slow, 1=normal, 2=fast';
-COMMENT ON COLUMN vn_length_votes.lang IS 'NULL for votes before 2025-06-05, inferred from the release language(s) in that case';
+-- COMMENT ON COLUMN vn_length_votes.length IS 'minutes';
+-- COMMENT ON COLUMN vn_length_votes.speed IS 'NULL=uncounted/ignored, 0=slow, 1=normal, 2=fast';
+-- COMMENT ON COLUMN vn_length_votes.lang IS 'NULL for votes before 2025-06-05, inferred from the release language(s) in that case';
 COMMENT ON TABLE wikidata IS 'Information fetched from Wikidata';
 COMMENT ON COLUMN wikidata.id IS 'Q-number';
 COMMENT ON COLUMN wikidata.website IS 'P856';
