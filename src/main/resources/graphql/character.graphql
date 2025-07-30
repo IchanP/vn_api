@@ -1,0 +1,34 @@
+type Character {
+    id: ID!
+    name: String!
+    latinName: String
+    alias: String;
+    # TODO Include the spoiler ones?
+    # Self defined
+    gender: String
+    # Biological
+    sex: String
+    age: Int
+    weight: Int
+    height: Int
+    # TODO - Make this an enum?
+    role: String
+    # TODO - include Bust, Waist, Hip?
+    # 0 or MMDD
+    birthday: Int
+    description: String
+    visualNovels: [VisualNovel!]!
+    voiceActor: [Staff!]
+    traits: [Traits!]! # I think this should be non-nullable?
+}
+
+# NOTE - This will require some fiddling since the traits depend on itself in postgres
+# Like Hair + Green
+# TODO - Make characters searchable by traits...
+type Trait {
+    # TODO - Add a parent trait?
+    id: ID! # TODO - Remove this? Might be needed if we want characters to be searchable by trait...
+    name: String!
+    alias: String
+    description: String!
+}

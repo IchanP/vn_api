@@ -1,0 +1,37 @@
+type VisualNovel {
+    id: ID!
+    # TODO - drop this coverId... that's for images?
+    coverId: ID!
+    # Title will either be in native language or latin
+    title: String!
+    # Can be null.
+    latinTitle: String
+    description: String
+    # Minutes
+    length: Int
+    # TODO - add link to cover image?
+    releases: [Release!]!
+    credits: [Credit!]!
+    characters: [Character!]!
+    # NOTE - This will require some averaging of the results...
+    tags: [Tag!]!
+}
+
+# Category of tags are "cont", "ero", "tech" (content, ero, technical) Include this?
+type Tag {
+    id: String! # TODO - Drop this? (Might be useful if we want to enable searching VNs by tag)
+    name: String!
+    alias: String
+    description: String!
+}
+
+type VisualNovelEdge {
+    node: VisualNovel!
+    cursor: String! # Should be the ID of he VN? Only thing that makes sense...
+}
+
+type VisualNovelResult {
+    totalCount: Int # This is the total amount of visual novels
+    edges: [VisualNovelEdge!]!
+    pageInfo: PageInfo!
+}

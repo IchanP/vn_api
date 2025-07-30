@@ -1,0 +1,17 @@
+type Staff {
+    id: ID!
+    name: String!
+    latinName: String
+    gender: String
+    description: String
+    credits: [Credit!]!
+}
+
+# TODO - Move this into staff?
+type Credit {
+    id: ID! # TODO A composite ID of staff and VN...?
+    staff: Staff!
+    role: String!
+    note: String
+    visualNovel: VisualNovel!
+}

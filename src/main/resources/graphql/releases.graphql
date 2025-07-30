@@ -1,0 +1,11 @@
+# TODO needs a slight rework or a new type to check if the producer is a dev or publisher...
+type Releases {
+    id: ID!;
+    title: String
+    latinTitle: String
+    machineTranslated: Boolean
+    platform: String
+    # TODO for this, we kinda need to check if they're the developer or publisher?
+    visaulNovel: VisualNovel
+    producer: Producer!
+}

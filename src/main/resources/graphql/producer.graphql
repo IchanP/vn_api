@@ -1,0 +1,7 @@
+type Producer {
+    id: ID!
+    name: String!
+    latinName: String
+    primaryLanguage: String!
+    description: String
+}
