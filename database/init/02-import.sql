@@ -165,7 +165,7 @@ SELECT EXISTS(SELECT 1 FROM pg_type WHERE typname = 'vndbtag') as has_vndbtag\gs
 \copy vn_anime from 'db/vn_anime'
 \copy vn_editions from 'db/vn_editions'
 --\copy vn_image_votes from 'db/vn_image_votes'
---\copy vn_length_votes from 'db/vn_length_votes'
+\copy vn_length_votes from 'db/vn_length_votes'
 \copy vn_relations from 'db/vn_relations'
 \copy vn_screenshots from 'db/vn_screenshots'
 \copy vn_seiyuu from 'db/vn_seiyuu'
@@ -239,7 +239,7 @@ ALTER TABLE vn_titles                ADD CONSTRAINT vn_titles_id_fkey           
 -- ALTER TABLE ulist_labels             ADD CONSTRAINT ulist_labels_uid_fkey              FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
 -- ALTER TABLE ulist_vns                ADD CONSTRAINT ulist_vns_uid_fkey                 FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
 -- ALTER TABLE ulist_vns                ADD CONSTRAINT ulist_vns_vid_fkey                 FOREIGN KEY (vid)       REFERENCES vn            (id);
--- ALTER TABLE vn_length_votes          ADD CONSTRAINT vn_length_votes_vid_fkey           FOREIGN KEY (vid)       REFERENCES vn            (id);
+ALTER TABLE vn_length_votes          ADD CONSTRAINT vn_length_votes_vid_fkey           FOREIGN KEY (vid)       REFERENCES vn            (id);
 -- ALTER TABLE vn_length_votes          ADD CONSTRAINT vn_length_votes_uid_fkey           FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE SET DEFAULT;
 -- ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_vid_fkey            FOREIGN KEY (vid)       REFERENCES vn            (id);
 -- ALTER TABLE vn_image_votes           ADD CONSTRAINT vn_image_votes_uid_fkey            FOREIGN KEY (uid)       REFERENCES users         (id) ON DELETE CASCADE;
@@ -313,9 +313,9 @@ COMMENT ON COLUMN vn.length IS 'Old length field, 0 = unknown, 1 = very short [.
 COMMENT ON COLUMN vn.devstatus IS '0 = finished, 1 = ongoing, 2 = cancelled';
 COMMENT ON COLUMN vn.l_renai IS 'Renai.us identifier';
 COMMENT ON COLUMN vn_editions.eid IS 'Edition identifier, local to the VN, not stable across revisions';
--- COMMENT ON COLUMN vn_length_votes.length IS 'minutes';
--- COMMENT ON COLUMN vn_length_votes.speed IS 'NULL=uncounted/ignored, 0=slow, 1=normal, 2=fast';
--- COMMENT ON COLUMN vn_length_votes.lang IS 'NULL for votes before 2025-06-05, inferred from the release language(s) in that case';
+COMMENT ON COLUMN vn_length_votes.length IS 'minutes';
+COMMENT ON COLUMN vn_length_votes.speed IS 'NULL=uncounted/ignored, 0=slow, 1=normal, 2=fast';
+COMMENT ON COLUMN vn_length_votes.lang IS 'NULL for votes before 2025-06-05, inferred from the release language(s) in that case';
 COMMENT ON TABLE wikidata IS 'Information fetched from Wikidata';
 COMMENT ON COLUMN wikidata.id IS 'Q-number';
 COMMENT ON COLUMN wikidata.website IS 'P856';

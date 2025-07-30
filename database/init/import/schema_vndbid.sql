@@ -371,16 +371,16 @@ CREATE TABLE vn_editions (
   -- PRIMARY KEY(vid, uid, img)
 -- );
 
--- CREATE TABLE vn_length_votes (
---   vid vndbid(v) NOT NULL,
---   uid vndbid(u),
---   date date NOT NULL,
---   length smallint NOT NULL,
---   speed smallint,
---   rid vndbid[] NOT NULL,
---   notes text NOT NULL,
---   lang language[]
--- );
+CREATE TABLE vn_length_votes (
+  vid vndbid(v) NOT NULL,
+  uid vndbid(u),
+  date date NOT NULL,
+  length smallint NOT NULL,
+  speed smallint,
+  rid vndbid[] NOT NULL,
+  notes text NOT NULL,
+  lang language[]
+);
 
 CREATE TABLE vn_relations (
   id vndbid(v) NOT NULL,

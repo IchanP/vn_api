@@ -1,0 +1,106 @@
+# TODO create enum types?
+# TODO - Add external links to the different types.
+# TODO - Add anime
+type Query {
+
+}
+
+type VisualNovel {
+    id: ID!
+    coverId: ID!
+    # Title will either be in native language or latin
+    title: string!
+    # Can be null.
+    latinTitle: string
+    description: text
+    # Minutes
+    length: int
+    # TODO - add link to cover image?
+    releases: [Release!]!
+    credits: [Credit!]!
+    characters: [Character!]!
+    # NOTE - This will require some averaging of the results...
+    tags: [Tag!]!
+}
+
+
+# TODO needs a slight rework or a new type to check if the producer is a dev or publisher...
+type Releases {
+    id: ID!;
+    visaulNovel: VisualNovel
+    title: string
+    latinTItle: string
+    machineTranslated: boolean
+    platform: string
+    # TODO for this, we kinda need to check if they're the developer or publisher?
+    producer: Producer!
+}
+
+type Producer {
+    id: ID!
+    name: string!
+    latinName: string
+    primaryLanguage: string!
+    description: string
+}
+
+
+type Staff {
+    id: ID!
+    name: string!
+    latinName: string
+    gender: string
+    description: text
+    credits: [Credit!]!
+}
+
+type Credit {
+    id: ID! # TODO A composite ID of staff and VN...?
+    staff: Staff!
+    visualNovel: VisualNovel!
+    role: string!
+    note: string
+}
+
+type Character {
+    id: ID!
+    name: string!
+    latinName: string
+    alias: string;
+    # TODO Include the spoiler ones?
+    # Self defined
+    gender: string
+    # Biological
+    sex: string
+    age: int
+    weight: int
+    height: int
+    # TODO - Make this an enum?
+    role: string
+    # TODO - include Bust, Waist, Hip?
+    # 0 or MMDD
+    birthday: int
+    description: string
+    visualNovels: [VisualNovel!]!
+    voiceActor: [Staff!]
+    traits: [Traits!]! # I think this should be non-nullable?
+}
+
+# NOTE - This will require some fiddling since the traits depend on itself in postgres
+# Like Hair + Green
+# TODO - Make characters searchable by traits...
+type Trait {
+    # TODO - Add a parent trait?
+    id: ID!
+    name: string!
+    alias: string
+    description: string!
+}
+
+# Category of tags are "cont", "ero", "tech" (content, ero, technical) Include this?
+type Tag {
+    id: ID!
+    name: string!
+    alias: string
+    description: string!
+}
