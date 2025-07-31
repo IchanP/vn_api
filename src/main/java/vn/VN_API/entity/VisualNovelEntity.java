@@ -16,17 +16,17 @@ import lombok.NoArgsConstructor;
 public class VisualNovelEntity {
 
   @Id
-  @Column(name = "id")
+  @Column(name = "id", columnDefinition = "vndbid")
   private String id;
 
   // Image fields are FKs
-  @Column(name = "image")
+  @Column(name = "image", columnDefinition = "vndbid")
   private String image;
 
-  @Column(name = "c_image")
+  @Column(name = "c_image", columnDefinition = "vndbid")
   private String cImage;
 
-  @Column(name = "olang")
+  @Column(name = "olang", columnDefinition = "language")
   private String originalLanguage;
 
   @Column(name = "l_wikidata")

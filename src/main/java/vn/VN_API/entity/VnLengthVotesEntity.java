@@ -7,6 +7,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -32,12 +33,13 @@ public class VnLengthVotesEntity {
 
   @Embeddable
   @Data
+  @EqualsAndHashCode
   public class VnLengthVotesId {
 
-    @Column(name = "vid")
+    @Column(name = "vid", columnDefinition = "vndbid")
     private String vid;
 
-    @Column(name = "uid")
+    @Column(name = "uid", columnDefinition = "vndbid")
     private String uid;
   }
 }

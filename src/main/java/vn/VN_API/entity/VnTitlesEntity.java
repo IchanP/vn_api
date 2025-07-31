@@ -1,14 +1,12 @@
 package vn.VN_API.entity;
 
-import javax.print.attribute.standard.MediaSize.Other;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -31,14 +29,13 @@ public class VnTitlesEntity {
 
   @Embeddable
   @Data
+  @EqualsAndHashCode
   public static class VnTitleId {
 
-    @JdbcTypeCode(SqlTypes.OTHER)
-    @Column(name = "id")
+    @Column(name = "id", columnDefinition = "vndbid")
     private String vnId;
 
-    @JdbcTypeCode(SqlTypes.OTHER)
-    @Column(name = "lang")
+    @Column(name = "lang", columnDefinition = "language")
     private String language;
   }
 }
