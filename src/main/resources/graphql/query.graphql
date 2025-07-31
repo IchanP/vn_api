@@ -9,8 +9,11 @@ type Query {
     # https://daily.dev/blog/pagination-in-graphql
     # https://apryse.com/blog/graphql/implementing-graphql-pagination
     # https://www.youtube.com/watch?v=DNiUwQ2m0oY
-    listVNs(first: Int, after: String, 
-            last: Int, before: String, 
-            title: String
-            ): VisualNovelConnection!
+    vn(id: ID): VisualNovel
+    vns(first: Int, 
+        after: String, 
+        last: Int, 
+        before: String, 
+        input: VisualNovelInput
+        ): VisualNovelConnection!
 }

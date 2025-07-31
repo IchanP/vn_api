@@ -25,13 +25,22 @@ type Tag {
     description: String!
 }
 
+# ------------ For pagination  ----------------
+
 type VisualNovelEdge {
     node: VisualNovel!
     cursor: String! # Should be the ID of he VN? Only thing that makes sense...
 }
 
-type VisualNovelResult {
+type VisualNovelConnection {
     totalCount: Int # This is the total amount of visual novels
     edges: [VisualNovelEdge!]!
     pageInfo: PageInfo!
+}
+
+# ------------ For filtering  ----------------
+
+input VisualNovelFilter {
+    title: String
+    # TODO - Add more stuff
 }
