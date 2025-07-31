@@ -1,7 +1,7 @@
 type VisualNovel {
     id: ID!
     # TODO - drop this coverId... that's for images?
-    coverId: ID!
+    # coverId: ID!
     # Title will either be in native language or latin
     title: String!
     # Can be null.
