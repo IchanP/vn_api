@@ -6,7 +6,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api.dev
-    # TODO add a healthcheck here... https://docs.docker.com/compose/how-tos/startup-order/
     depends_on:
       vn_test_db:
         condition: service_healthy
