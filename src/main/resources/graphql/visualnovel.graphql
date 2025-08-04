@@ -2,10 +2,10 @@ type VisualNovel {
     id: ID!
     # TODO - drop this coverId... that's for images?
     # coverId: ID!
+   
     # Title will either be in native language or latin
-    title: String!
-    # Can be null.
-    latinTitle: String
+    # TODO - These titles should be set as a list of title type... (since it depends on the language...)
+
     description: String
     # Minutes
     length: Int
@@ -15,6 +15,7 @@ type VisualNovel {
     characters: [Character!]!
     # NOTE - This will require some averaging of the results...
     tags: [Tag!]!
+    titles: [Title!]!
 }
 
 # Category of tags are "cont", "ero", "tech" (content, ero, technical) Include this?
@@ -23,6 +24,14 @@ type Tag {
     name: String!
     alias: String
     description: String!
+}
+
+
+type Title {
+  title: String!
+  latin: String
+  language: String!
+  official: Boolean!
 }
 
 # ------------ For pagination  ----------------
