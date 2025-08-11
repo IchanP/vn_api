@@ -11,7 +11,7 @@ import vn.VN_API.entity.VisualNovelEntity;
 // https://docs.spring.io/spring-data/jpa/reference/repositories/query-keywords-reference.html#appendix.query.method.subject
 // https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html#:~:text=CREATE%20attempts%20to%20construct%20a,construction%20in%20%E2%80%9CQuery%20Creation%E2%80%9D.
 @Repository
-public interface IVisualNovelRepository extends JpaRepository<VisualNovelEntity, String> {
+public interface VisualNovelRepository extends JpaRepository<VisualNovelEntity, String> {
   // Needs to be set to optional as it may be null...
   <Optional> VisualNovelEntity findById(String id);
 
