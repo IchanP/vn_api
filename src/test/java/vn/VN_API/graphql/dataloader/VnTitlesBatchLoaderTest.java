@@ -1,7 +1,6 @@
 package vn.VN_API.graphql.dataloader;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
