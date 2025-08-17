@@ -16,7 +16,6 @@ public class VnTitlesBatchLoader implements BatchLoader<String, List<VnTitlesEnt
     this.vnTitleRepository = repository;
   }
 
-  // TODO write a test for this function!
   @Override
   public CompletionStage<List<List<VnTitlesEntity>>> load(List<String> vnIds) {
     List<VnTitlesEntity> allTitles = this.vnTitleRepository.findByIdVnIdIn(vnIds);
