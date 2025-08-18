@@ -82,33 +82,25 @@ public class VisualNovelResolverTest {
 
   @Test
   void handlesEmptyTitlesList() {
-    // TODO - is this how we want it to act?
-    setupVotes(List.of((short) 15));
     given(titleRepo.findByIdVnId(vnId)).willReturn(List.of());
 
     Optional<VisualNovelData> data = resolver.vn(vnId);
 
-    assertThat(data).isPresent();
-    assertThat(data.get().getTitles()).isEmpty();
+    assertThat(data).isEmpty();
   }
 
 
   @Test
   void calculatesLengthFromVotesCorrectly() {
     setupTitles("en");
-    Short shortest = 5;
-    Short medium = 15;
-    Short longest = 25;
 
-    setupVotes(List.of((short) shortest, (short) medium, (short) longest));
+
+    setupVotes(List.of((short) 5, (short) 15, (short) 20));
 
     Optional<VisualNovelData> data = resolver.vn(vnId);
 
-    int expectedCalculatedLength = (shortest + medium + longest) / 3;
-
     assertThat(data).isPresent();
-    // Assert the length calculation (average? median?)
-    assertThat(data.get().getLength()).isEqualTo(expectedCalculatedLength);
+    assertThat(data.get().getLength()).isEqualTo(13);
   }
 
   private void setupTitles(String language) {

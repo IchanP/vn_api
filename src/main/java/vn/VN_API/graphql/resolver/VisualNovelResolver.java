@@ -1,39 +1,51 @@
 package vn.VN_API.graphql.resolver;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import vn.VN_API.entity.VisualNovelEntity;
+import vn.VN_API.entity.VnLengthVotesEntity;
+import vn.VN_API.entity.VnTitlesEntity;
 import vn.VN_API.graphql.model.DTO.VisualNovelData;
 import vn.VN_API.graphql.model.Response.VisualNovelConnection;
 import vn.VN_API.repository.VisualNovelRepository;
 import vn.VN_API.repository.VisualNovelTitleRepository;
 import vn.VN_API.repository.VnLengthVoteRepository;
+import vn.VN_API.util.VoteLengthCalculator;
 
 @Controller
 public class VisualNovelResolver {
   private final VisualNovelRepository vnRepo;
   private final VisualNovelTitleRepository titleRepo;
+  private final VnLengthVoteRepository voteRepo;
 
   public VisualNovelResolver(VisualNovelRepository vnRepository,
-      VisualNovelTitleRepository titlesRepository, VnLengthVoteRepository lengthRepository) {
+      VisualNovelTitleRepository titlesRepository, VnLengthVoteRepository voteRepository) {
     this.vnRepo = vnRepository;
     this.titleRepo = titlesRepository;
+    this.voteRepo = voteRepository;
   }
 
   @QueryMapping
-  public Optional<VisualNovelData> vn(@Argument String id) {
-    Optional<VisualNovelEntity> entity = vnRepo.findById(id);
-    if (entity.isEmpty()) {
+  public Optional<VisualNovelData> vn(@Argument String vnId) {
+    Optional<VisualNovelEntity> vnEntity = vnRepo.findById(vnId);
+    if (vnEntity.isEmpty()) {
       return Optional.empty();
     }
 
-    // TODO title repo
+    List<VnTitlesEntity> titles = titleRepo.findByIdVnId(vnId);
+    if (titles.size() == 0) {
+      return Optional.empty();
+    }
 
-    // TODO batchloader...
+    List<VnLengthVotesEntity> votes = voteRepo.findByIdVnId(vnId);
+    int length = VoteLengthCalculator.calculateAverageLength(votes);
 
-    return null;
+    VisualNovelData data = new VisualNovelData(vnEntity.get(), titles, length);
+
+    return Optional.of(data);
   }
 
   @QueryMapping

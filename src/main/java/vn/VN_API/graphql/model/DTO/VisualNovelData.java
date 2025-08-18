@@ -13,6 +13,5 @@ import vn.VN_API.entity.VnTitlesEntity;
 public class VisualNovelData {
   private VisualNovelEntity visualNovel;
   private List<VnTitlesEntity> titles;
-  @Getter
   private int length; // Minutes
 }
