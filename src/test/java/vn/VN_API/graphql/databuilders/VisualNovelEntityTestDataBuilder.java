@@ -5,8 +5,8 @@ import vn.VN_API.entity.VisualNovelEntity;
 public class VisualNovelEntityTestDataBuilder {
 
   String id = "v1";
-  String image = "ci2"; // TODO make this match real data...
-  String cImage = "c2"; // TODO make this match real data....
+  String image = "ci2";
+  String cImage = "cv2";
   String originalLanguage = "jp";
   Integer wikidataId = null;
   Integer voteCount = null;
@@ -84,13 +84,12 @@ public class VisualNovelEntityTestDataBuilder {
 
 
   public VisualNovelEntityTestDataBuilder complete() {
-    // TODO look over data to make sure this mimics internal data...
     this.wikidataId = 123456;
-    this.voteCount = 50;
+    this.voteCount = 1900;
     this.rating = 80;
     this.average = 80;
     this.length = 3;
-    this.developmentStatus = 2;
+    this.developmentStatus = 0;
     this.alias = "Test VN";
     this.description = "A test visual novel";
     return this;

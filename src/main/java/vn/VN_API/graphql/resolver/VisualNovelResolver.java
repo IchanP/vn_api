@@ -15,13 +15,11 @@ import vn.VN_API.repository.VnLengthVoteRepository;
 public class VisualNovelResolver {
   private final VisualNovelRepository vnRepo;
   private final VisualNovelTitleRepository titleRepo;
-  private final VnLengthVoteRepository lengthRepo;
 
   public VisualNovelResolver(VisualNovelRepository vnRepository,
       VisualNovelTitleRepository titlesRepository, VnLengthVoteRepository lengthRepository) {
     this.vnRepo = vnRepository;
     this.titleRepo = titlesRepository;
-    this.lengthRepo = lengthRepository;
   }
 
   @QueryMapping
@@ -30,6 +28,10 @@ public class VisualNovelResolver {
     if (entity.isEmpty()) {
       return Optional.empty();
     }
+
+    // TODO title repo
+
+    // TODO batchloader...
 
     return null;
   }

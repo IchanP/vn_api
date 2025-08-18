@@ -7,12 +7,12 @@ import vn.VN_API.entity.VnLengthVotesEntity.VnLengthVotesId;
 public class VisualNovelLengthVoteEntityTestDataBuilder {
   String vid = "v1";
   String uid = "u1";
-  Short length = 2;
+  Short length = 520;
   LocalDate date = null;
   Short speed = null;
   String notes = null;
 
-  public VisualNovelLengthVoteEntityTestDataBuilder aVnVote() {
+  public static VisualNovelLengthVoteEntityTestDataBuilder aVnVote() {
     return new VisualNovelLengthVoteEntityTestDataBuilder();
   }
 
