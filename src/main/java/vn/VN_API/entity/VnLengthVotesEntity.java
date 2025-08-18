@@ -34,7 +34,7 @@ public class VnLengthVotesEntity {
   @Embeddable
   @Data
   @EqualsAndHashCode
-  public class VnLengthVotesId {
+  public static class VnLengthVotesId {
 
     @Column(name = "vid", columnDefinition = "vndbid")
     private String vid;
