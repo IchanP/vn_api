@@ -12,7 +12,8 @@ import vn.VN_API.entity.VisualNovelEntity;
 // https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html#:~:text=CREATE%20attempts%20to%20construct%20a,construction%20in%20%E2%80%9CQuery%20Creation%E2%80%9D.
 @Repository
 public interface VisualNovelRepository extends JpaRepository<VisualNovelEntity, String> {
-  List<VisualNovelEntity> findByTitle(String title);
+  // TODO - Since entity doesn't have title we need to fetch it somewhere else...
+  // List<VisualNovelEntity> findByTitle(String title);
 
   // Pagination
   Page<VisualNovelEntity> findByIdGreaterThan(String id, Pageable pageable);
