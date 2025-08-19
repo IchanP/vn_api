@@ -2,7 +2,7 @@ type Character {
     id: ID!
     name: String!
     latinName: String
-    alias: String;
+    alias: String
     # TODO Include the spoiler ones?
     # Self defined
     gender: String
@@ -19,7 +19,7 @@ type Character {
     description: String
     visualNovels: [VisualNovel!]!
     voiceActor: [Staff!]
-    traits: [Traits!]! # I think this should be non-nullable?
+    traits: [Trait!]! # I think this should be non-nullable?
 }
 
 # NOTE - This will require some fiddling since the traits depend on itself in postgres

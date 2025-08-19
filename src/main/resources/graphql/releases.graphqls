@@ -1,6 +1,6 @@
 # TODO needs a slight rework or a new type to check if the producer is a dev or publisher...
-type Releases {
-    id: ID!;
+type Release {
+    id: ID!
     title: String
     latinTitle: String
     machineTranslated: Boolean

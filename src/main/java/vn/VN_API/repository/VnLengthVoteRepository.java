@@ -9,8 +9,8 @@ import vn.VN_API.entity.VnLengthVotesEntity.VnLengthVotesId;
 public interface VnLengthVoteRepository
     extends JpaRepository<VnLengthVotesEntity, VnLengthVotesId> {
   // Needs to be set to optional as it may be null...
-  List<VnLengthVotesEntity> findByIdVnId(String id);
+  List<VnLengthVotesEntity> findByIdVid(String id);
 
   // To fetch several at once for paged queries.
-  List<VnLengthVotesEntity> findByIdVnIdIn(Collection<String> vnIds);
+  List<VnLengthVotesEntity> findByIdVidIn(Collection<String> vnIds);
 }
