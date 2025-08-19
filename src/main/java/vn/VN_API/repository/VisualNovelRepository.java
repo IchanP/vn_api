@@ -1,9 +1,12 @@
 package vn.VN_API.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.VN_API.entity.VisualNovelEntity;
 
@@ -14,6 +17,9 @@ import vn.VN_API.entity.VisualNovelEntity;
 public interface VisualNovelRepository extends JpaRepository<VisualNovelEntity, String> {
   // TODO - Since entity doesn't have title we need to fetch it somewhere else...
   // List<VisualNovelEntity> findByTitle(String title);
+
+  @Query(value = "SELECT * FROM vn WHERE id = CAST(:id AS vndbid)", nativeQuery = true)
+  Optional<VisualNovelEntity> findByVndbId(@Param("id") String id);
 
   // Pagination
   Page<VisualNovelEntity> findByIdGreaterThan(String id, Pageable pageable);

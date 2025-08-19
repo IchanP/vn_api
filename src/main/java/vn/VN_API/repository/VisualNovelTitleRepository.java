@@ -3,6 +3,8 @@ package vn.VN_API.repository;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.VN_API.entity.VnTitlesEntity;
 import vn.VN_API.entity.VnTitlesEntity.VnTitleId;
@@ -13,7 +15,9 @@ import vn.VN_API.entity.VnTitlesEntity.VnTitleId;
 @Repository
 public interface VisualNovelTitleRepository extends JpaRepository<VnTitlesEntity, VnTitleId> {
   // Needs to be set to optional as it may be null...
-  List<VnTitlesEntity> findByIdVnId(String id);
+
+  @Query(value = "SELECT * FROM vn_titles WHERE id = CAST(:id AS vndbid)", nativeQuery = true)
+  List<VnTitlesEntity> findByIdVnId(@Param("id") String id);
 
   // To fetch several at once for paged queries.
   List<VnTitlesEntity> findByIdVnIdIn(Collection<String> vnIds);

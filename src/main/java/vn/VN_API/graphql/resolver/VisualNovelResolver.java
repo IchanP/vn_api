@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
 import vn.VN_API.entity.VisualNovelEntity;
 import vn.VN_API.entity.VnLengthVotesEntity;
 import vn.VN_API.entity.VnTitlesEntity;
@@ -16,6 +17,7 @@ import vn.VN_API.repository.VnLengthVoteRepository;
 import vn.VN_API.util.VoteLengthCalculator;
 
 @Controller
+@Slf4j
 public class VisualNovelResolver {
   private final VisualNovelRepository vnRepo;
   private final VisualNovelTitleRepository titleRepo;
@@ -29,21 +31,27 @@ public class VisualNovelResolver {
   }
 
   @QueryMapping
-  public Optional<VisualNovelData> vn(@Argument String vnId) {
-    Optional<VisualNovelEntity> vnEntity = vnRepo.findById(vnId);
+  public Optional<VisualNovelData> vn(@Argument String id) {
+    Optional<VisualNovelEntity> vnEntity = vnRepo.findByVndbId(id);
+    log.warn("Visual Novel: {}", vnEntity);
     if (vnEntity.isEmpty()) {
       return Optional.empty();
     }
 
-    List<VnTitlesEntity> titles = titleRepo.findByIdVnId(vnId);
+    List<VnTitlesEntity> titles = titleRepo.findByIdVnId(id);
+    log.warn("Titles: {}", titles);
+    log.warn("Titles: {}", titles);
     if (titles.size() == 0) {
       return Optional.empty();
     }
 
-    List<VnLengthVotesEntity> votes = voteRepo.findByIdVnId(vnId);
+    List<VnLengthVotesEntity> votes = voteRepo.findByIdVid(id);
     int length = VoteLengthCalculator.calculateAverageLength(votes);
 
-    VisualNovelData data = new VisualNovelData(vnEntity.get(), titles, length);
+    VisualNovelEntity nonOptVn = vnEntity.get();
+
+    VisualNovelData data =
+        new VisualNovelData(nonOptVn.getId(), nonOptVn.getDescription(), titles, length);
 
     return Optional.of(data);
   }
