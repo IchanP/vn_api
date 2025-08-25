@@ -2,9 +2,13 @@ package vn.VN_API.graphql.resolver;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
+import graphql.schema.DataFetchingEnvironment;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import vn.VN_API.entity.VisualNovelEntity;
 import vn.VN_API.entity.VnLengthVotesEntity;
@@ -18,42 +22,42 @@ import vn.VN_API.util.VoteLengthCalculator;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class VisualNovelResolver {
   private final VisualNovelRepository vnRepo;
   private final VisualNovelTitleRepository titleRepo;
   private final VnLengthVoteRepository voteRepo;
 
-  public VisualNovelResolver(VisualNovelRepository vnRepository,
-      VisualNovelTitleRepository titlesRepository, VnLengthVoteRepository voteRepository) {
-    this.vnRepo = vnRepository;
-    this.titleRepo = titlesRepository;
-    this.voteRepo = voteRepository;
-  }
+  // https://docs.spring.io/spring-graphql/reference/controllers.html#controllers.schema-mapping
+  // https://claude.ai/chat/b0b84218-1163-4dd7-a8a0-d2b1b9b2c0c0
 
   @QueryMapping
-  public Optional<VisualNovelData> vn(@Argument String id) {
-    Optional<VisualNovelEntity> vnEntity = vnRepo.findByVndbId(id);
-    log.warn("Visual Novel: {}", vnEntity);
-    if (vnEntity.isEmpty()) {
-      return Optional.empty();
-    }
+  public Optional<VisualNovelEntity> vn(@Argument String id) {
+    return vnRepo.findByVndbId(id);
+    // TODO - Clean this up...
 
-    List<VnTitlesEntity> titles = titleRepo.findByIdVnId(id);
-    log.warn("Titles: {}", titles);
-    log.warn("Titles: {}", titles);
-    if (titles.size() == 0) {
-      return Optional.empty();
-    }
+    // List<VnLengthVotesEntity> votes = voteRepo.findByIdVid(id);
+    // int length = VoteLengthCalculator.calculateAverageLength(votes);
 
-    List<VnLengthVotesEntity> votes = voteRepo.findByIdVid(id);
-    int length = VoteLengthCalculator.calculateAverageLength(votes);
+  }
 
-    VisualNovelEntity nonOptVn = vnEntity.get();
+  // TODO add dataLoader and datafetchingenvironment to here...
+  // https://claude.ai/chat/b0b84218-1163-4dd7-a8a0-d2b1b9b2c0c0
+  @SchemaMapping(typeName = "VisualNovel", field = "titles")
+  public CompletableFuture<List<VnTitlesEntity>> titleWithContext(VisualNovelEntity vn) {
+    List<VnTitlesEntity> titles = titleRepo.findByIdVnId(vn.getId());
+    return CompletableFuture.completedFuture(titles);
+  }
 
-    VisualNovelData data =
-        new VisualNovelData(nonOptVn.getId(), nonOptVn.getDescription(), titles, length);
+  @SchemaMapping(typeName = "Title", field = "language")
+  public String language(VnTitlesEntity title) {
+    return title.getId().getLanguage();
+  }
 
-    return Optional.of(data);
+  @SchemaMapping(typeName = "VisualNovel", field = "length")
+  public int length(VisualNovelEntity vn) {
+    List<VnLengthVotesEntity> votes = voteRepo.findByIdVid(vn.getId());
+    return VoteLengthCalculator.calculateAverageLength(votes);
   }
 
   @QueryMapping

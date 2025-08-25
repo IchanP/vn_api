@@ -11,10 +11,15 @@ public class VoteLengthCalculator {
 
     int total = 0;
 
+    int size = votes.size();
     for (VnLengthVotesEntity vote : votes) {
-      total += vote.getLength();
+      if (vote != null) {
+        total += vote.getLength();
+      } else {
+        size--;
+      }
     }
 
-    return total / votes.size();
+    return total / size;
   }
 }
