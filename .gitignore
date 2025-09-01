@@ -57,3 +57,12 @@ hs_err_pid*
 replay_pid*
 
 db
+
+devdocs
+
+db_loader_env
+extract_files
+
+# Database dumps
+*.zst
+*.tar

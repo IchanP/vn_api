@@ -6,6 +6,6 @@ type Release {
     machineTranslated: Boolean
     platform: String
     # TODO for this, we kinda need to check if they're the developer or publisher?
-    visaulNovel: VisualNovel
+    visualNovel: VisualNovel
     producer: Producer!
 }

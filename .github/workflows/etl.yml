@@ -1,0 +1,36 @@
+name: VNDB Dump ETL
+
+
+on: workflow_dispatch
+
+# on:
+  # schedule:
+    # - cron: '0 0 * * 0'
+  
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scripts
+    steps:
+        
+      # TODO - Need checkout code step...
+      # Read up on this
+      
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - run: pip install zstandard requests
+
+      - name: Download tar
+        run: python download.py
+
+      - name: Extract and move files
+        run: python extract.py
+        

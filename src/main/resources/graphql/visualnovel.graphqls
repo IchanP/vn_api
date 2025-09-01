@@ -7,12 +7,12 @@ type VisualNovel {
     # Length is in unit of minutes
     length: Int
     # TODO - add link to cover image?
+    titles: [Title!]!
+    characters: [Character!]!
     releases: [Release!]!
     credits: [Credit!]!
-    characters: [Character!]!
     # NOTE - This will require some averaging of the results...
     tags: [Tag!]!
-    titles: [Title!]!
 }
 
 # Category of tags are "cont", "ero", "tech" (content, ero, technical) Include this?
